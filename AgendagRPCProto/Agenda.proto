@@ -1,0 +1,59 @@
+﻿syntax = "proto3";
+
+package agendagRPCProto;
+
+import "google/protobuf/timestamp.proto";
+
+service Agenda {
+	rpc Cadastrar (CadastrarRequest) returns (CadastrarResponse);
+	rpc Consultar (ConsultarRequest) returns (ConsultarResponse);
+	rpc ConsultarTodos (ConsultarTodosRequest) returns (ConsultarTodosResponse);
+	rpc Excluir (ExcluirRequest) returns (ExcluirResponse);
+}
+
+message CadastrarRequest {
+	string nome = 1;
+	string email = 2;
+	google.protobuf.Timestamp dataNascimento = 3;
+}
+message CadastrarResponse {
+	Status status = 1;
+	string mensagemErro = 2;
+	Contato contato = 3;
+	enum Status {
+		SUCESSO = 0;
+		JA_CADASTRADO = 1;
+		ERRO = 9;
+	}
+}
+
+message ConsultarRequest {
+	uint32 id = 1;
+}
+message ConsultarResponse {
+	bool encontrado = 1;
+	Contato contato = 2;
+}
+
+
+message ExcluirRequest {
+	uint32 id = 1;
+}
+message ExcluirResponse { 
+	bool sucesso = 1;
+	string mensagemErro = 2;
+}
+
+message ConsultarTodosRequest { }
+
+message ConsultarTodosResponse {
+	uint32 quantidade = 1;
+	repeated Contato contatos = 2;
+}
+
+message Contato {
+	uint32 id = 1;
+	string nome = 2;
+	string email = 3;
+	google.protobuf.Timestamp dataNascimento = 4;
+}
